@@ -1,5 +1,5 @@
 import Image from "next/image";
-import aboutImg from "../../../../public/about.png";
+import aboutImg from "../../../../../public/about.png";
 import { Check } from "lucide-react";
 import { WhatsappLogoIcon } from "@phosphor-icons/react/dist/ssr";
 import { GithubLogoIcon } from "@phosphor-icons/react/dist/ssr";

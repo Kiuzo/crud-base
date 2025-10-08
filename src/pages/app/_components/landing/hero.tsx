@@ -1,5 +1,5 @@
 import { WhatsappLogoIcon } from '@phosphor-icons/react/dist/ssr';
-import logoImg from '../../../../public/logo.png';
+import logoImg from '../../../../../public/logo.png';
 import Image from 'next/image';
 
 export function Hero() {
@@ -23,14 +23,14 @@ export function Hero() {
 
                     <div className="space-y-6">
                         <h1 className="text-3xl md:text-4xl lg:text-5xl leading-10 font-bold">
-                            Crud Base
+                            Seja bem-vindo(a) a Crud Base
                         </h1>
                         <p className="mt-4 lg:text-lg">
-                            Bem-vindo(a) a Crud Base
+                            Este projeto irá te ajudar a facilitar seus futuros projetos, disponibilizando arquivos pré-prontos para seu projeto!
                         </p>
                         <div className="flex">
                             <a href=""
-                                className="bg-emerald-500 px-2 py-1 font-semibold flex items-center rounded-md gap-2">
+                                className="bg-emerald-500 px-2 py-1 font-semibold flex items-center rounded-md gap-2 hover:scale-110 duration-300">
                                 <WhatsappLogoIcon className='w-5 h-5' />
                                 Contato
                             </a>
