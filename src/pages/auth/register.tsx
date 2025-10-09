@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { RegisterComponent } from "./app/_components/account/registercomponent";
+import { RegisterComponent } from "../../components/account/Register_Component";
 
 
 export default function Register() {

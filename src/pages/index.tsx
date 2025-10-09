@@ -1,12 +1,14 @@
-import { About } from "./app/_components/landing/about";
-import { Hero } from "./app/_components/landing/hero";
-import { Services } from "./app/_components/landing/services";
-import { Footer } from "./app/_components/landing/footer";
-import Link from "next/link";
+import { About } from "../components/landing/about";
+import { Hero } from "../components/landing/hero";
+import { Services } from "../components/landing/services";
+import { Footer } from "../components/landing/footer";
+import Navbar from "@/components/includes/Navbar";
+
 
 export default function Home() {
   return (
     <main className="font-pt-sans">
+        <Navbar/>      
         <Hero/>
         <About/>
         <Services/>

@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { LoginComponent } from "./app/_components/account/logincomponent";
-import { Footer } from "./app/_components/landing/footer";
+import { LoginComponent } from "../../components/account/Login_Component";
+import { Footer } from "../../components/landing/footer";
 
 export default function Login() {
     return (
