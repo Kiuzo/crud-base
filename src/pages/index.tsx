@@ -8,11 +8,13 @@ import Navbar from "@/components/includes/Navbar";
 export default function Home() {
   return (
     <main className="font-pt-sans">
-        <Navbar/>      
+        <Navbar/>
+        <div className="mt-16">
         <Hero/>
         <About/>
         <Services/>
         <Footer/>
+        </div>      
     </main>
   );
 }
