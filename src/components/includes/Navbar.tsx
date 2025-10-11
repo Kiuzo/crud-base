@@ -9,7 +9,7 @@ export default function Navbar() {
 
                 <Link
                     href="/"
-                    className="text-3xl md:text-4xl lg:text-5xl font-semibold select-none transition-transform duration-300 hover:scale-105 hover:text-red-400"
+                    className="text-3xl md:text-4xl lg:text-5xl font-semibold select-none "
                 >
                     Crud Base
                 </Link>
@@ -21,21 +21,21 @@ export default function Navbar() {
                         <li>
                             <Link
                                 href="/"
-                                className="transition-colors duration-300 hover:text-red-400 hover:font-bold select-none"
+                                className="select-none"
                             >Home
                             </Link>
                         </li>
                         <li>
                             <Link
                                 href="/auth/login"
-                                className="transition-colors duration-300 hover:text-red-400 hover:font-bold select-none"
+                                className="select-none"
                             >Fazer Login
                             </Link>
                         </li>
                         <li>
                             <Link
                                 href="/auth/register"
-                                className="transition-colors duration-300 hover:text-red-400 hover:font-bold select-none"> Criar Conta
+                                className="select-none"> Criar Conta
                             </Link>
                         </li>
 

@@ -4,7 +4,7 @@ import { RegisterComponent } from "../../components/account/Register_Component";
 
 export default function Register() {
     return (
-       <main className="font-pt-sans">
+       <main >
            <RegisterComponent/>
        </main>
     );

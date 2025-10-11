@@ -4,7 +4,7 @@ import { Footer } from "../../components/landing/footer";
 
 export default function Login() {
     return (
-       <main className="font-pt-sans">
+       <main >
            <LoginComponent/>
        </main>
     );

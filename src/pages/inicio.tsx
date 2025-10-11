@@ -1,9 +1,16 @@
+import { Sidebar } from "@/components/includes/Sidebar";
 import { InicioComponent } from "@/components/system/Inicio_Component"
 
-export default function Inicio(){
-    return(
+export default function Inicio() {
+    return (
         <section>
-            <InicioComponent/>
+            
+            <Sidebar/>
+
+            <main className="ml-[250px]">
+                <InicioComponent />
+            </main>
+
         </section>
     );
 }
