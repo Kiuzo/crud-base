@@ -17,10 +17,10 @@ export function Footer() {
                             Para começar crie uma conta.
                         </p>
 
-                        <Link href="auth/register" className="hover:bg-green-500 hover:scale-110 duration-500  rounded-md p-1">
+                        <Link href="auth/register" className="hover:bg-blue-600 duration-500  rounded-md p-1">
                             Criar conta.
                         </Link>
-                        <Link href="auth/login" className="hover:bg-green-500 hover:scale-110 duration-500  rounded-md p-1">
+                        <Link href="auth/login" className="hover:bg-blue-600 duration-500  rounded-md p-1">
                             Logar.
                         </Link>
                     </div>

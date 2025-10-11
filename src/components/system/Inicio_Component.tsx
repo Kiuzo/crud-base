@@ -1,4 +1,4 @@
-import { IdentificationBadge, MagnifyingGlass, UserCircleCheck, UserGear, UserMinus, UserPlus } from "@phosphor-icons/react";
+import { Badge, Search, UserCheck, Settings, UserMinus, UserPlus } from "lucide-react";
 import Link from "next/link";
 
 export function InicioComponent() {
@@ -27,12 +27,12 @@ export function InicioComponent() {
                         </div>
 
                         <div className="shadow-lg bg-green-600 rounded-md p-6 flex flex-col items-center justify-center gap-4 text-white font-semibold text-center hover:bg-green-700 transition-colors cursor-pointer">
-                            <UserGear className="w-16 h-16" />
+                            <Settings className="w-16 h-16" />
                             <h1 className="text-sm lg:text-base">Pesquisar pessoa</h1>
                         </div>
 
                         <div className="shadow-lg bg-yellow-600 rounded-md p-6 flex flex-col items-center justify-center gap-4 text-white font-semibold text-center hover:bg-yellow-700 transition-colors cursor-pointer">
-                            <UserCircleCheck className="w-16 h-16" />
+                            <UserCheck className="w-16 h-16" />
                             <h1 className="text-sm lg:text-base">Atualizar pessoa</h1>
                         </div>
 
@@ -74,7 +74,7 @@ export function InicioComponent() {
                     <div className="flex flex-col gap-6 bg-blue-400 py-8 px-6">
 
                         <div className="flex items-center justify-center">
-                            <IdentificationBadge className="text-white w-16 h-16 lg:w-20 lg:h-20" />
+                            <Badge className="text-white w-16 h-16 lg:w-20 lg:h-20" />
                         </div>
 
                         <div className="flex flex-col items-center">
@@ -97,7 +97,7 @@ export function InicioComponent() {
                     <div className="flex flex-col gap-6 bg-green-500 py-8 px-6 rounded-b-md">
 
                         <div className="flex items-center justify-center">
-                            <MagnifyingGlass className="text-white w-16 h-16 lg:w-20 lg:h-20" />
+                            <Search className="text-white w-16 h-16 lg:w-20 lg:h-20" />
                         </div>
 
                         <div className="flex flex-col items-center">

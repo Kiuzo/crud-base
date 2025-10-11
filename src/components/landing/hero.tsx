@@ -1,4 +1,4 @@
-import { WhatsappLogoIcon } from '@phosphor-icons/react/dist/ssr';
+import { MessageCircle } from 'lucide-react';
 import logoImg from '../../../public/logo.png';
 import Image from 'next/image';
 
@@ -31,7 +31,7 @@ export function Hero() {
                         <div className="flex">
                             <a href=""
                                 className="bg-emerald-500 px-2 py-1 font-semibold flex items-center rounded-md gap-2 hover:scale-110 duration-300">
-                                <WhatsappLogoIcon className='w-5 h-5' />
+                                <MessageCircle size={20} strokeWidth={1.5} />
                                 Contato
                             </a>
                         </div>

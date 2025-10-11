@@ -6,7 +6,7 @@ export function RegisterComponent() {
 
         <section>
 
-            <Navbar/>
+            <Navbar />
 
             <section className="flex justify-center items-center min-h-screen bg-gradient-to-br from-white via-gray-100 to-gray-200">
 
@@ -24,7 +24,7 @@ export function RegisterComponent() {
                             name="nome"
                             required
                             placeholder="Nome completo"
-                            className="w-full bg-gray-50 border-2 border-gray-200 focus:border-yellow-400 focus:bg-white rounded-lg py-3 px-4 outline-none transition-all duration-200 placeholder:text-gray-400"
+                            className="w-full bg-gray-50 border-2 border-gray-200 focus:border-blue-500 focus:bg-white rounded-lg py-3 px-4 outline-none transition-all duration-200 placeholder:text-gray-400"
                         />
 
                         <input
@@ -32,7 +32,7 @@ export function RegisterComponent() {
                             name="email"
                             required
                             placeholder="seu@email.com"
-                            className="w-full bg-gray-50 border-2 border-gray-200 focus:border-yellow-400 focus:bg-white rounded-lg py-3 px-4 outline-none transition-all duration-200 placeholder:text-gray-400"
+                            className="w-full bg-gray-50 border-2 border-gray-200 focus:border-blue-500 focus:bg-white rounded-lg py-3 px-4 outline-none transition-all duration-200 placeholder:text-gray-400"
                         />
 
                         <input
@@ -40,27 +40,38 @@ export function RegisterComponent() {
                             name="senha"
                             required
                             placeholder="Senha"
-                            className="w-full bg-gray-50 border-2 border-gray-200 focus:border-yellow-400 focus:bg-white rounded-lg py-3 px-4 outline-none transition-all duration-200 placeholder:text-gray-400"
+                            className="w-full bg-gray-50 border-2 border-gray-200 focus:border-blue-500 focus:bg-white rounded-lg py-3 px-4 outline-none transition-all duration-200 placeholder:text-gray-400"
                         />
 
                         <button
                             type="submit"
-                            className="bg-gradient-to-r from-yellow-300 to-yellow-500 hover:from-yellow-400 hover:to-yellow-600 text-gray-800 font-bold rounded-lg py-3 px-4 transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] mt-2"
+                             className="bg-white hover:bg-gray-100 text-blue-500 font-bold py-3 px-4 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl mt-2"
                         >
                             Criar minha conta
                         </button>
 
                         <div className="flex gap-2 items-center justify-center pt-4 border-t border-white/20">
-                            <p className="text-white text-sm">Já tem conta?</p>
                             <Link
                                 href="../auth/login"
-                                className="text-yellow-300 text-sm font-bold hover:text-yellow-200 hover:underline hover:scale-105 transition-all duration-300"
+                                className="text-gray-300 text-sm font-semibold"
                             >
-                                Fazer login
+                                Como criar boas senhas?
                             </Link>
                         </div>
 
                     </form>
+
+                </div>
+
+                <div className="bg-white shadow-2xl w-150 h-138 flex flex-col items-center justify-center p-8 rounded-lg mx-4">
+
+                    <h1 className="text-2xl md:text-3xl text-center font-semibold text-blue-500">Já possui uma conta?</h1>
+
+                    <p className="text-blue-500 font-semibold py-6 text-center">Se você já possui uma conta, não recomendamos a criação de outra</p>
+
+                    <Link href="../auth/login" className="mt-4 font-semibold text-white bg-blue-500 hover:bg-blue-600 py-3 px-6 text-lg rounded-md shadow-md transition-colors duration-200">
+                        Logar-se
+                    </Link>
 
                 </div>
 

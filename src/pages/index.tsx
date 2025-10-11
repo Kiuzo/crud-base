@@ -7,16 +7,13 @@ import Navbar from "@/components/includes/Navbar";
 
 export default function Home() {
   return (
-    <main >
+    <main>
       <Navbar />
-
-      <div className="mt-16">
-
+      <div className="mt-15">
         <Hero />
         <About />
         <Services />
         <Footer />
-
       </div>
 
     </main>

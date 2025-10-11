@@ -1,8 +1,6 @@
 import Image from "next/image";
 import aboutImg from "../../../public/about.png";
-import { Check } from "lucide-react";
-import { WhatsappLogoIcon } from "@phosphor-icons/react";
-import { GithubLogoIcon } from "@phosphor-icons/react";
+import { Check, MessageCircle, Github } from "lucide-react";
 
 export function About() {
     return (
@@ -49,13 +47,13 @@ export function About() {
                             <div className="flex gap-2">
                                 <a href="#"
                                     className="bg-blue-500 px-2 py-1 font-semibold flex items-center rounded-md gap-2 text-white item-center justify-center w-fit hover:scale-105 duration-500">
-                                    <WhatsappLogoIcon className="w-5 h-5  text-white" />
+                                    <MessageCircle size={20} strokeWidth={1.5} className="text-white" />
                                     Contato via Whatsapp
                                 </a>
 
                                 <a href="#"
                                     className="bg-blue-800 px-2 py-1 font-semibold flex items-center rounded-md gap-2 text-white  item-center justify-center w-fit hover:scale-105 duration-500">
-                                    <GithubLogoIcon className="w-5 h-5 text-white" />
+                                    <Github size={20} strokeWidth={1.5} className="text-white" />
                                     Meu GitHub
                                 </a>
                             </div>
