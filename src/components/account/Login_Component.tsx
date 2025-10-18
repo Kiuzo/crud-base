@@ -6,9 +6,9 @@ export function LoginComponent() {
         <>
             <Navbar />
 
-            <section className="flex justify-center items-center min-h-screen bg-gradient-to-br from-white via-gray-100 to-gray-200">
+            <section className="flex flex-col-reverse gap-y-12 lg:flex-row justify-center items-center min-h-screen bg-gradient-to-br from-white via-gray-100 to-gray-200 py-8">
 
-                <div className="bg-white shadow-2xl w-150 h-138 flex flex-col items-center justify-center p-8 rounded-lg mx-4">
+                <div className="bg-white shadow-2xl w-full max-w-md lg:w-150 h-auto lg:h-150 flex flex-col items-center justify-center p-8 rounded-lg mx-4">
 
                     <h1 className="text-2xl md:text-3xl text-center font-semibold text-blue-500">Ainda não possui conta?</h1>
 
@@ -44,6 +44,7 @@ export function LoginComponent() {
                             placeholder="Senha"
                             className="w-full bg-gray-50 border-2 border-gray-200 focus:border-blue-500 focus:bg-white rounded-lg py-3 px-4 outline-none transition-all duration-200 placeholder:text-gray-400"
                         />
+
 
                         <button
                             type="submit"
