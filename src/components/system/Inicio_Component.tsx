@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react'; // Removido useEffect (não estava sendo usado)
+import Link from 'next/link'; // ADICIONAR ESTA LINHA
 import { Badge, Search, UserCheck, UserMinus, UserPlus, TrendingUp } from "lucide-react";
 
 interface Usuario {
@@ -10,7 +11,8 @@ interface Usuario {
 }
 
 export function InicioComponent() {
-    const [usuarios, setUsuarios] = useState<Usuario[]>([
+    // Removido setUsuarios da desestruturação (não estava sendo usado)
+    const [usuarios] = useState<Usuario[]>([
         { id: 1, nome: 'Ana Silva', email: 'ana@email.com', dataCadastro: '2024-10-18', pesquisas: 12 },
         { id: 2, nome: 'Paulo Santos', email: 'paulo@email.com', dataCadastro: '2024-10-18', pesquisas: 8 },
         { id: 3, nome: 'Maria Oliveira', email: 'maria@email.com', dataCadastro: '2024-10-15', pesquisas: 6 },
@@ -83,45 +85,45 @@ export function InicioComponent() {
                             </h2>
                             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
 
-                                <a 
-                                    href="/adicionar"
+                                <Link 
+                                    href="/system/adicionar"
                                     className="bg-white border-2 border-slate-200 rounded-xl p-6 flex flex-col items-center justify-center gap-3 hover:border-blue-500 hover:shadow-lg transition-all group cursor-pointer"
                                 >
                                     <div className="p-3 bg-blue-50 rounded-lg group-hover:bg-blue-100 transition-colors">
                                         <UserPlus className="w-8 h-8 text-blue-600" />
                                     </div>
                                     <span className="text-sm font-medium text-slate-700 text-center">Adicionar Usuário</span>
-                                </a>
+                                </Link>
 
-                                <a 
-                                    href="/remover"
+                                <Link 
+                                    href="/system/remover"
                                     className="bg-white border-2 border-slate-200 rounded-xl p-6 flex flex-col items-center justify-center gap-3 hover:border-red-500 hover:shadow-lg transition-all group cursor-pointer"
                                 >
                                     <div className="p-3 bg-red-50 rounded-lg group-hover:bg-red-100 transition-colors">
                                         <UserMinus className="w-8 h-8 text-red-600" />
                                     </div>
                                     <span className="text-sm font-medium text-slate-700 text-center">Remover Usuário</span>
-                                </a>
+                                </Link>
 
-                                <a 
-                                    href="/pesquisar"
+                                <Link 
+                                    href="/system/pesquisar"
                                     className="bg-white border-2 border-slate-200 rounded-xl p-6 flex flex-col items-center justify-center gap-3 hover:border-green-500 hover:shadow-lg transition-all group cursor-pointer"
                                 >
                                     <div className="p-3 bg-green-50 rounded-lg group-hover:bg-green-100 transition-colors">
                                         <Search className="w-8 h-8 text-green-600" />
                                     </div>
                                     <span className="text-sm font-medium text-slate-700 text-center">Pesquisar Usuário</span>
-                                </a>
+                                </Link>
 
-                                <a 
-                                    href="/atualizar"
+                                <Link 
+                                    href="/system/atualizar"
                                     className="bg-white border-2 border-slate-200 rounded-xl p-6 flex flex-col items-center justify-center gap-3 hover:border-amber-500 hover:shadow-lg transition-all group cursor-pointer"
                                 >
                                     <div className="p-3 bg-amber-50 rounded-lg group-hover:bg-amber-100 transition-colors">
                                         <UserCheck className="w-8 h-8 text-amber-600" />
                                     </div>
                                     <span className="text-sm font-medium text-slate-700 text-center">Atualizar Usuário</span>
-                                </a>
+                                </Link>
 
                             </div>
                         </div>
@@ -179,12 +181,12 @@ export function InicioComponent() {
                                     <h3 className="text-lg font-semibold mb-1">💙 Apoie o Projeto</h3>
                                     <p className="text-sm text-blue-100">Ajude a manter o sistema funcionando</p>
                                 </div>
-                                <a 
+                                <Link 
                                     href="#" 
                                     className="bg-white text-blue-600 px-6 py-2.5 rounded-lg font-medium text-sm hover:bg-blue-50 transition-colors whitespace-nowrap shadow-lg hover:shadow-xl"
                                 >
                                     Fazer Doação
-                                </a>
+                                </Link>
                             </div>
                         </div>
 

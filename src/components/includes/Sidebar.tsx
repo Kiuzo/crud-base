@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Link from 'next/link'; // ADICIONE ESTA LINHA
 import { Home, UserPlus, UserX, Search, UserCog, LogOut, ChevronRight, Menu, X } from "lucide-react";
 
 export function Sidebar() {
@@ -58,8 +59,8 @@ export function Sidebar() {
                         <p className="text-xs font-semibold text-blue-200 px-4 mb-2 uppercase tracking-wider">Menu Principal</p>
                     </div>
 
-                    <a
-                        href="../system/inicio"
+                    <Link
+                        href="/system/inicio"
                         onClick={closeSidebar}
                         className="flex items-center justify-between px-4 py-3.5 rounded-xl bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-all group shadow-lg border border-white/10"
                     >
@@ -70,14 +71,14 @@ export function Sidebar() {
                             <span className="text-sm font-semibold">Home</span>
                         </div>
                         <ChevronRight size={16} className="text-blue-200 group-hover:text-white transition-colors" />
-                    </a>
+                    </Link>
 
                     <div className="mb-4 mt-6">
                         <p className="text-xs font-semibold text-blue-200 px-4 mb-2 uppercase tracking-wider">Gerenciar Usuários</p>
                     </div>
 
-                    <a
-                        href="../system/adicionar"
+                    <Link
+                        href="/system/adicionar"
                         onClick={closeSidebar}
                         className="flex items-center justify-between px-4 py-3.5 rounded-xl hover:bg-white/10 transition-all group"
                     >
@@ -88,10 +89,10 @@ export function Sidebar() {
                             <span className="text-sm font-medium text-blue-100 group-hover:text-white transition-colors">Adicionar</span>
                         </div>
                         <ChevronRight size={16} className="text-transparent group-hover:text-white transition-colors" />
-                    </a>
+                    </Link>
 
-                    <a
-                        href="../system/pesquisar"
+                    <Link
+                        href="/system/pesquisar"
                         onClick={closeSidebar}
                         className="flex items-center justify-between px-4 py-3.5 rounded-xl hover:bg-white/10 transition-all group"
                     >
@@ -102,10 +103,10 @@ export function Sidebar() {
                             <span className="text-sm font-medium text-blue-100 group-hover:text-white transition-colors">Pesquisar</span>
                         </div>
                         <ChevronRight size={16} className="text-transparent group-hover:text-white transition-colors" />
-                    </a>
+                    </Link>
 
-                    <a
-                        href="../system/atualizar"
+                    <Link
+                        href="/system/atualizar"
                         onClick={closeSidebar}
                         className="flex items-center justify-between px-4 py-3.5 rounded-xl hover:bg-white/10 transition-all group"
                     >
@@ -116,10 +117,10 @@ export function Sidebar() {
                             <span className="text-sm font-medium text-blue-100 group-hover:text-white transition-colors">Atualizar</span>
                         </div>
                         <ChevronRight size={16} className="text-transparent group-hover:text-white transition-colors" />
-                    </a>
+                    </Link>
 
-                    <a
-                        href="../system/remover"
+                    <Link
+                        href="/system/remover"
                         onClick={closeSidebar}
                         className="flex items-center justify-between px-4 py-3.5 rounded-xl hover:bg-white/10 transition-all group"
                     >
@@ -130,12 +131,12 @@ export function Sidebar() {
                             <span className="text-sm font-medium text-blue-100 group-hover:text-white transition-colors">Remover</span>
                         </div>
                         <ChevronRight size={16} className="text-transparent group-hover:text-white transition-colors" />
-                    </a>
+                    </Link>
                 </nav>
 
                 {/* Footer com separação visual */}
                 <div className="p-4 space-y-1 border-t border-white/10 bg-black/10">
-                    <a
+                    <Link
                         href="/"
                         onClick={closeSidebar}
                         className="flex items-center justify-between px-4 py-3 rounded-xl hover:bg-red-500/20 transition-all group"
@@ -146,7 +147,7 @@ export function Sidebar() {
                             </div>
                             <span className="text-sm font-medium text-blue-100 group-hover:text-red-300 transition-colors">Sair</span>
                         </div>
-                    </a>
+                    </Link>
                 </div>
 
             </aside>

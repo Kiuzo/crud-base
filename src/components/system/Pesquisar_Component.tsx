@@ -29,7 +29,7 @@ export function PesquisarComponent() {
 
         // Simula busca com delay
         setTimeout(() => {
-            const found = usuarios.find(user => 
+            const found = usuarios.find(user =>
                 user.nome.toLowerCase().includes(searchTerm.toLowerCase())
             );
 
@@ -63,7 +63,7 @@ export function PesquisarComponent() {
 
                 {/* Card de Pesquisa */}
                 <div className="bg-white rounded-2xl shadow-xl p-8 lg:p-10 border border-slate-200">
-                    
+
                     <div className="space-y-6">
                         {/* Campo de Pesquisa */}
                         <div className="space-y-2">
@@ -144,11 +144,10 @@ export function PesquisarComponent() {
                                 )}
                                 <div>
                                     <p className="text-sm font-semibold text-slate-500">Status</p>
-                                    <span className={`inline-block mt-1 px-3 py-1 rounded-full text-sm font-bold ${
-                                        resultado.status === 'ativo' 
-                                            ? 'bg-green-100 text-green-700' 
+                                    <span className={`inline-block mt-1 px-3 py-1 rounded-full text-sm font-bold ${resultado.status === 'ativo'
+                                            ? 'bg-green-100 text-green-700'
                                             : 'bg-red-100 text-red-700'
-                                    }`}>
+                                        }`}>
                                         {resultado.status === 'ativo' ? 'Ativo' : 'Inativo'}
                                     </span>
                                 </div>
@@ -166,7 +165,7 @@ export function PesquisarComponent() {
                             </div>
                             <h2 className="text-2xl font-bold text-slate-800 mb-2">Usuário Não Encontrado</h2>
                             <p className="text-slate-600">
-                                Não foi possível encontrar nenhum usuário com o nome "<span className="font-semibold">{searchTerm}</span>"
+                                Não foi possível encontrar nenhum usuário com o nome &ldquo;<span className="font-semibold">{searchTerm}</span>&rdquo;
                             </p>
                             <p className="text-sm text-slate-500 mt-4">
                                 Verifique se o nome está correto ou tente pesquisar por outro termo
