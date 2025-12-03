@@ -1,12 +1,17 @@
+'use client'
 import { useState } from 'react';
-import { Search, User, Mail, Calendar, CheckCircle, XCircle } from 'lucide-react';
+import { Search, User, Mail, Calendar, CheckCircle, XCircle, Briefcase, Building2 } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
 
 interface Usuario {
-    id: number;
+    id: string;
     nome: string;
-    email: string;
-    dataCadastro: string;
-    status: 'ativo' | 'inativo';
+    email?: string;
+    cargo?: string;
+    departamento?: string;
+    telefone?: string;
+    created_at: string;
+    ativo: boolean;
 }
 
 export function PesquisarComponent() {
@@ -14,38 +19,70 @@ export function PesquisarComponent() {
     const [resultado, setResultado] = useState<Usuario | null>(null);
     const [searching, setSearching] = useState(false);
     const [notFound, setNotFound] = useState(false);
+    const [error, setError] = useState('');
 
-    // Dados mockados para simulação
-    const usuarios: Usuario[] = [
-        { id: 1, nome: 'Ana Silva', email: 'ana@email.com', dataCadastro: '15/01/2024', status: 'ativo' },
-        { id: 2, nome: 'Paulo Santos', email: 'paulo@email.com', dataCadastro: '20/02/2024', status: 'ativo' },
-        { id: 3, nome: 'Maria Oliveira', email: 'maria@email.com', dataCadastro: '10/03/2024', status: 'inativo' },
-    ];
+    const handleSearch = async () => {
+        if (!searchTerm.trim()) return;
 
-    const handleSearch = () => {
         setSearching(true);
         setNotFound(false);
         setResultado(null);
+        setError('');
 
-        // Simula busca com delay
-        setTimeout(() => {
-            const found = usuarios.find(user =>
-                user.nome.toLowerCase().includes(searchTerm.toLowerCase())
-            );
+        try {
+            // Buscar na tabela administradores
+            const { data, error: searchError } = await supabase
+                .from('administradores')
+                .select(`
+                    id,
+                    nome,
+                    cargo,
+                    departamento,
+                    telefone,
+                    ativo,
+                    created_at,
+                    user_id
+                `)
+                .ilike('nome', `%${searchTerm}%`)
+                .limit(1)
+                .single();
 
-            if (found) {
-                setResultado(found);
+            if (searchError && searchError.code !== 'PGRST116') {
+                throw searchError;
+            }
+
+            if (data) {
+                // Buscar email do usuário na auth
+                const { data: { user }, error: authError } = await supabase.auth.admin.getUserById(data.user_id);
+                
+                setResultado({
+                    ...data,
+                    email: user?.email || 'Email não disponível'
+                });
             } else {
                 setNotFound(true);
             }
+
+        } catch (error: any) {
+            console.error('Erro ao buscar usuário:', error);
+            setError('Erro ao buscar usuário. Tente novamente.');
+        } finally {
             setSearching(false);
-        }, 800);
+        }
     };
 
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
             handleSearch();
         }
+    };
+
+    const formatarData = (data: string) => {
+        return new Date(data).toLocaleDateString('pt-BR', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        });
     };
 
     return (
@@ -80,6 +117,14 @@ export function PesquisarComponent() {
                                 className="w-full bg-slate-50 border-2 border-slate-200 focus:border-blue-500 focus:bg-white rounded-xl py-3.5 px-4 outline-none transition-all duration-200 placeholder:text-slate-400 hover:border-slate-300"
                             />
                         </div>
+
+                        {/* Mensagem de Erro */}
+                        {error && (
+                            <div className="bg-red-50 border-2 border-red-200 rounded-xl p-4 flex items-center gap-3">
+                                <XCircle className="w-5 h-5 text-red-600" />
+                                <p className="text-red-700 font-semibold">{error}</p>
+                            </div>
+                        )}
 
                         {/* Botão Pesquisar */}
                         <button
@@ -126,29 +171,51 @@ export function PesquisarComponent() {
                                 </div>
                             </div>
 
+                            {/* Cargo */}
+                            {resultado.cargo && (
+                                <div className="flex items-start gap-3 p-4 bg-slate-50 rounded-lg">
+                                    <Briefcase className="w-5 h-5 text-blue-500 mt-0.5" />
+                                    <div>
+                                        <p className="text-sm font-semibold text-slate-500">Cargo</p>
+                                        <p className="text-lg font-bold text-slate-800">{resultado.cargo}</p>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Departamento */}
+                            {resultado.departamento && (
+                                <div className="flex items-start gap-3 p-4 bg-slate-50 rounded-lg">
+                                    <Building2 className="w-5 h-5 text-blue-500 mt-0.5" />
+                                    <div>
+                                        <p className="text-sm font-semibold text-slate-500">Departamento</p>
+                                        <p className="text-lg font-bold text-slate-800">{resultado.departamento}</p>
+                                    </div>
+                                </div>
+                            )}
+
                             {/* Data de Cadastro */}
                             <div className="flex items-start gap-3 p-4 bg-slate-50 rounded-lg">
                                 <Calendar className="w-5 h-5 text-blue-500 mt-0.5" />
                                 <div>
                                     <p className="text-sm font-semibold text-slate-500">Data de Cadastro</p>
-                                    <p className="text-lg font-bold text-slate-800">{resultado.dataCadastro}</p>
+                                    <p className="text-lg font-bold text-slate-800">{formatarData(resultado.created_at)}</p>
                                 </div>
                             </div>
 
                             {/* Status */}
                             <div className="flex items-start gap-3 p-4 bg-slate-50 rounded-lg">
-                                {resultado.status === 'ativo' ? (
+                                {resultado.ativo ? (
                                     <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
                                 ) : (
                                     <XCircle className="w-5 h-5 text-red-500 mt-0.5" />
                                 )}
                                 <div>
                                     <p className="text-sm font-semibold text-slate-500">Status</p>
-                                    <span className={`inline-block mt-1 px-3 py-1 rounded-full text-sm font-bold ${resultado.status === 'ativo'
+                                    <span className={`inline-block mt-1 px-3 py-1 rounded-full text-sm font-bold ${resultado.ativo
                                             ? 'bg-green-100 text-green-700'
                                             : 'bg-red-100 text-red-700'
                                         }`}>
-                                        {resultado.status === 'ativo' ? 'Ativo' : 'Inativo'}
+                                        {resultado.ativo ? 'Ativo' : 'Inativo'}
                                     </span>
                                 </div>
                             </div>
@@ -173,11 +240,6 @@ export function PesquisarComponent() {
                         </div>
                     </div>
                 )}
-
-                {/* Dica */}
-                <p className="text-center text-sm text-slate-500">
-                    💡 Dica: Tente pesquisar por "Ana", "Paulo" ou "Maria"
-                </p>
             </div>
         </section>
     );

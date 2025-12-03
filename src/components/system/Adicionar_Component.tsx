@@ -1,5 +1,7 @@
+'use client'
 import { useState } from 'react';
-import { User, Mail, Lock, UserPlus, CheckCircle } from 'lucide-react';
+import { User, Mail, Lock, UserPlus, CheckCircle, AlertCircle } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
 
 export function AdicionarComponent() {
     const [formData, setFormData] = useState({
@@ -8,12 +10,68 @@ export function AdicionarComponent() {
         senha: ''
     });
     const [submitted, setSubmitted] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
 
-    const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
-        setSubmitted(true);
-        setTimeout(() => setSubmitted(false), 3000);
-        console.log('Dados do formulário:', formData);
+        setLoading(true);
+        setError('');
+        setSubmitted(false);
+
+        // Validações
+        if (formData.senha.length < 8) {
+            setError('A senha deve ter no mínimo 8 caracteres');
+            setLoading(false);
+            return;
+        }
+
+        try {
+            // 1. Criar usuário na autenticação
+            const { data: authData, error: authError } = await supabase.auth.signUp({
+                email: formData.email,
+                password: formData.senha,
+                options: {
+                    data: {
+                        nome: formData.nome,
+                    },
+                    emailRedirectTo: `${window.location.origin}/auth/callback`
+                }
+            });
+
+            if (authError) throw authError;
+
+            // 2. Opcional: Criar perfil de administrador automaticamente
+            if (authData.user) {
+                const { error: profileError } = await supabase
+                    .from('administradores')
+                    .insert([
+                        {
+                            user_id: authData.user.id,
+                            nome: formData.nome,
+                            cargo: 'Usuário',
+                            ativo: true
+                        }
+                    ]);
+
+                if (profileError) {
+                    console.error('Erro ao criar perfil:', profileError);
+                    // Não bloqueamos o fluxo se o perfil falhar
+                }
+            }
+
+            // Sucesso!
+            setSubmitted(true);
+            setFormData({ nome: '', email: '', senha: '' });
+            
+            setTimeout(() => setSubmitted(false), 5000);
+
+        } catch (error: any) {
+            console.error('Erro ao criar usuário:', error);
+            setError(error.message || 'Erro ao criar usuário');
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,7 +101,18 @@ export function AdicionarComponent() {
                     {submitted && (
                         <div className="mb-6 bg-green-50 border-2 border-green-200 rounded-xl p-4 flex items-center gap-3">
                             <CheckCircle className="w-5 h-5 text-green-600" />
-                            <p className="text-green-700 font-semibold">Usuário criado com sucesso!</p>
+                            <div>
+                                <p className="text-green-700 font-semibold">Usuário criado com sucesso!</p>
+                                <p className="text-green-600 text-sm">Um email de confirmação foi enviado para {formData.email}</p>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Mensagem de Erro */}
+                    {error && (
+                        <div className="mb-6 bg-red-50 border-2 border-red-200 rounded-xl p-4 flex items-center gap-3">
+                            <AlertCircle className="w-5 h-5 text-red-600" />
+                            <p className="text-red-700 font-semibold">{error}</p>
                         </div>
                     )}
 
@@ -61,7 +130,7 @@ export function AdicionarComponent() {
                                 value={formData.nome}
                                 onChange={handleChange}
                                 required
-                                placeholder="Digite seu nome completo"
+                                placeholder="Digite o nome completo"
                                 className="w-full bg-slate-50 border-2 border-slate-200 focus:border-blue-500 focus:bg-white rounded-xl py-3.5 px-4 outline-none transition-all duration-200 placeholder:text-slate-400 hover:border-slate-300"
                             />
                         </div>
@@ -78,7 +147,7 @@ export function AdicionarComponent() {
                                 value={formData.email}
                                 onChange={handleChange}
                                 required
-                                placeholder="seu@email.com"
+                                placeholder="usuario@email.com"
                                 className="w-full bg-slate-50 border-2 border-slate-200 focus:border-blue-500 focus:bg-white rounded-xl py-3.5 px-4 outline-none transition-all duration-200 placeholder:text-slate-400 hover:border-slate-300"
                             />
                         </div>
@@ -103,18 +172,17 @@ export function AdicionarComponent() {
                         {/* Botão Submit */}
                         <button
                             onClick={handleSubmit}
+                            disabled={loading || !formData.nome || !formData.email || !formData.senha}
                             type="button"
-                            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] mt-8 flex items-center justify-center gap-2"
+                            className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 px-6 rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] mt-8 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                         >
                             <UserPlus className="w-5 h-5" />
-                            Criar Conta
+                            {loading ? 'Criando usuário...' : 'Criar Conta'}
                         </button>
 
-                      
                     </div>
                 </div>
 
-              
             </div>
         </section>
     );

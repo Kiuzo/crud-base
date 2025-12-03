@@ -1,7 +1,40 @@
-import Link from "next/link";
-import Navbar from "../includes/Navbar";
+'use client'
+import { useState } from 'react'
+import Link from "next/link"
+import { useRouter } from 'next/navigation'
+import Navbar from "../includes/Navbar"
+import { supabase } from '@/lib/supabase'
 
 export function LoginComponent() {
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState('')
+    const router = useRouter()
+
+    const handleLogin = async (e: React.FormEvent) => {
+        e.preventDefault()
+        setLoading(true)
+        setError('')
+
+        try {
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email: email,
+                password: password,
+            })
+
+            if (error) throw error
+
+            // Login bem-sucedido - redirecionar para dashboard
+            router.push('../system/inicio')
+            
+        } catch (error: any) {
+            setError(error.message || 'Erro ao fazer login')
+        } finally {
+            setLoading(false)
+        }
+    }
+
     return (
         <>
             <Navbar />
@@ -27,12 +60,14 @@ export function LoginComponent() {
                         <p className="text-blue-100 text-sm">Caso não tenha uma conta, registre-se</p>
                     </div>
 
-                    <form className="flex flex-col gap-y-6">
+                    <div className="flex flex-col gap-y-6">
 
                         <input
                             type="email"
                             name="email"
                             required
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             placeholder="seu@email.com"
                             className="w-full bg-gray-50 border-2 border-gray-200 focus:border-blue-500 focus:bg-white rounded-lg py-3 px-4 outline-none transition-all duration-200 placeholder:text-gray-400"
                         />
@@ -41,16 +76,24 @@ export function LoginComponent() {
                             type="password"
                             name="senha"
                             required
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                             placeholder="Senha"
                             className="w-full bg-gray-50 border-2 border-gray-200 focus:border-blue-500 focus:bg-white rounded-lg py-3 px-4 outline-none transition-all duration-200 placeholder:text-gray-400"
                         />
 
+                        {error && (
+                            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                                {error}
+                            </div>
+                        )}
 
                         <button
-                            type="submit"
-                            className="bg-white hover:bg-gray-100 text-blue-500 font-bold py-3 px-4 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl mt-2"
+                            onClick={handleLogin}
+                            disabled={loading}
+                            className="bg-white hover:bg-gray-100 text-blue-500 font-bold py-3 px-4 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                            Entrar
+                            {loading ? 'Entrando...' : 'Entrar'}
                         </button>
 
                         <div className="flex gap-2 items-center justify-center pt-4 border-t border-white/20">
@@ -63,11 +106,11 @@ export function LoginComponent() {
                             </Link>
                         </div>
 
-                    </form>
+                    </div>
 
                 </div>
 
             </section>
         </>
-    );
+    )
 }

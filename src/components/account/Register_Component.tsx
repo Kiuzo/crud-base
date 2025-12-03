@@ -1,7 +1,66 @@
-import Link from "next/link";
-import Navbar from "../includes/Navbar";
+'use client'
+import { useState } from 'react'
+import Link from "next/link"
+import { useRouter } from 'next/navigation'
+import Navbar from "../includes/Navbar"
+import { supabase } from '@/lib/supabase'
 
 export function RegisterComponent() {
+    const [nome, setNome] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState('')
+    const [success, setSuccess] = useState(false)
+    const router = useRouter()
+
+    const handleRegister = async (e: React.FormEvent) => {
+        e.preventDefault()
+        setLoading(true)
+        setError('')
+        setSuccess(false)
+
+        // Validação de senhas
+        if (password !== confirmPassword) {
+            setError('As senhas não coincidem')
+            setLoading(false)
+            return
+        }
+
+        if (password.length < 6) {
+            setError('A senha deve ter no mínimo 6 caracteres')
+            setLoading(false)
+            return
+        }
+
+        try {
+            const { data, error } = await supabase.auth.signUp({
+                email: email,
+                password: password,
+                options: {
+                    data: {
+                        nome: nome,
+                    }
+                }
+            })
+
+            if (error) throw error
+
+            setSuccess(true)
+            
+            // Redirecionar após 2 segundos
+            setTimeout(() => {
+                router.push('/auth/login')
+            }, 2000)
+            
+        } catch (error: any) {
+            setError(error.message || 'Erro ao criar conta')
+        } finally {
+            setLoading(false)
+        }
+    }
+
     return (
         <>
             <Navbar />
@@ -15,12 +74,14 @@ export function RegisterComponent() {
                         <p className="text-blue-100 text-sm">Crie sua conta e comece agora</p>
                     </div>
 
-                    <form className="flex flex-col gap-y-6">
+                    <div className="flex flex-col gap-y-6">
 
                         <input
                             type="text"
                             name="nome"
                             required
+                            value={nome}
+                            onChange={(e) => setNome(e.target.value)}
                             placeholder="Nome completo"
                             className="w-full bg-gray-50 border-2 border-gray-200 focus:border-blue-500 focus:bg-white rounded-lg py-3 px-4 outline-none transition-all duration-200 placeholder:text-gray-400"
                         />
@@ -29,6 +90,8 @@ export function RegisterComponent() {
                             type="email"
                             name="email"
                             required
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             placeholder="seu@email.com"
                             className="w-full bg-gray-50 border-2 border-gray-200 focus:border-blue-500 focus:bg-white rounded-lg py-3 px-4 outline-none transition-all duration-200 placeholder:text-gray-400"
                         />
@@ -37,7 +100,9 @@ export function RegisterComponent() {
                             type="password"
                             name="senha"
                             required
-                            placeholder="Senha"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder="Senha (mínimo 6 caracteres)"
                             className="w-full bg-gray-50 border-2 border-gray-200 focus:border-blue-500 focus:bg-white rounded-lg py-3 px-4 outline-none transition-all duration-200 placeholder:text-gray-400"
                         />
 
@@ -45,15 +110,30 @@ export function RegisterComponent() {
                             type="password"
                             name="senha2"
                             required
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
                             placeholder="Confirmar Senha"
                             className="w-full bg-gray-50 border-2 border-gray-200 focus:border-blue-500 focus:bg-white rounded-lg py-3 px-4 outline-none transition-all duration-200 placeholder:text-gray-400"
                         />
 
+                        {error && (
+                            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+                                {error}
+                            </div>
+                        )}
+
+                        {success && (
+                            <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+                                ✅ Conta criada! Verifique seu email para confirmar. Redirecionando...
+                            </div>
+                        )}
+
                         <button
-                            type="submit"
-                            className="bg-white hover:bg-gray-100 text-blue-500 font-bold py-3 px-4 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl mt-2"
+                            onClick={handleRegister}
+                            disabled={loading}
+                            className="bg-white hover:bg-gray-100 text-blue-500 font-bold py-3 px-4 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl mt-2 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                            Criar minha conta
+                            {loading ? 'Criando conta...' : 'Criar minha conta'}
                         </button>
 
                         <div className="flex gap-2 items-center justify-center pt-4 border-t border-white/20">
@@ -65,7 +145,7 @@ export function RegisterComponent() {
                             </Link>
                         </div>
 
-                    </form>
+                    </div>
 
                 </div>
 
@@ -83,5 +163,5 @@ export function RegisterComponent() {
 
             </section>
         </>
-    );
+    )
 }
