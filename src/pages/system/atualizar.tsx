@@ -1,5 +1,5 @@
 import { Sidebar } from "@/components/includes/Sidebar";
-import { AtualizarComponent } from "@/components/system/Atualizar_component";
+import { AtualizarUsuario } from "@/components/system/Atualizar_component";
 
 export default function Atualizar() {
     return (
@@ -8,7 +8,7 @@ export default function Atualizar() {
             <Sidebar />
 
 
-            <AtualizarComponent />
+            <AtualizarUsuario />
 
 
         </section>

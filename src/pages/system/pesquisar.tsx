@@ -1,5 +1,5 @@
 import { Sidebar } from "@/components/includes/Sidebar";
-import { PesquisarComponent } from "@/components/system/Pesquisar_Component";
+import { PesquisarUsuario } from "@/components/system/Pesquisar_Component";
 
 export default function Pesquisar() {
     return (
@@ -8,7 +8,7 @@ export default function Pesquisar() {
             <Sidebar />
 
 
-            <PesquisarComponent />
+            <PesquisarUsuario/>
 
 
         </section >

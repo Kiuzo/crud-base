@@ -1,5 +1,5 @@
 import { Sidebar } from "@/components/includes/Sidebar";
-import { RemoverComponent } from "@/components/system/Remover_Component";
+import { RemoverUsuario } from "@/components/system/Remover_Component";
 
 export default function Remover() {
     return (
@@ -7,7 +7,7 @@ export default function Remover() {
 
             <Sidebar />
 
-            <RemoverComponent />
+            <RemoverUsuario />
 
 
         </section>

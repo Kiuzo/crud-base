@@ -1,5 +1,5 @@
 import { Sidebar } from "@/components/includes/Sidebar";
-import { AdicionarComponent } from "@/components/system/Adicionar_Component";
+import { AdicionarUsuario  } from "@/components/system/Adicionar_Component";
 
 export default function Adicionar() {
     return (
@@ -7,7 +7,7 @@ export default function Adicionar() {
             <Sidebar />
 
 
-            <AdicionarComponent />
+            <AdicionarUsuario />
 
 
         </section>
