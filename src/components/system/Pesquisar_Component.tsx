@@ -23,7 +23,7 @@ export function PesquisarUsuario() {
         setUsuariosEncontrados(resultados);
     };
 
-    const formatarData = (data: string) => {
+    const formatarData = (data?: string) => {
         // Fallback para data atual se inválida, ou tratar como string
         if (!data) return '-';
         return new Date(data).toLocaleDateString('pt-BR');
@@ -115,20 +115,20 @@ export function PesquisarUsuario() {
                                     <div className="flex items-center gap-2 text-sm">
                                         <Calendar className="w-4 h-4 text-gray-400" />
                                         <span className="text-gray-600">Cadastro:</span>
-                                        <span className="font-medium">{formatarData((usuario as any).created_at)}</span>
+                                        <span className="font-medium">{formatarData(usuario.created_at)}</span>
                                     </div>
 
                                     <div className="flex items-center gap-2 text-sm md:col-span-2 mt-2">
-                                        <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${(usuario as any).ativo !== false // Assumindo true se undefined
+                                        <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${usuario.ativo
                                             ? 'bg-green-50 text-green-700 border-green-200'
                                             : 'bg-red-50 text-red-700 border-red-200'
                                             }`}>
-                                            {(usuario as any).ativo !== false ? (
+                                            {usuario.ativo ? (
                                                 <CheckCircle className="w-3 h-3" />
                                             ) : (
                                                 <XCircle className="w-3 h-3" />
                                             )}
-                                            {(usuario as any).ativo !== false ? 'Ativo' : 'Inativo'}
+                                            {usuario.ativo ? 'Ativo' : 'Inativo'}
                                         </span>
                                     </div>
                                 </div>

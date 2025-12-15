@@ -4,6 +4,7 @@ import Link from "next/link"
 import { useRouter } from 'next/navigation'
 import Navbar from "../includes/Navbar"
 import { supabase } from '@/lib/supabase'
+import { handleSupabaseError } from '@/utils/supabase-helpers'
 
 export function LoginComponent() {
     const [email, setEmail] = useState('')
@@ -27,9 +28,9 @@ export function LoginComponent() {
 
             // Login bem-sucedido - redirecionar para dashboard
             router.push('../system/inicio')
-            
+
         } catch (error: any) {
-            setError(error.message || 'Erro ao fazer login')
+            setError(handleSupabaseError(error))
         } finally {
             setLoading(false)
         }

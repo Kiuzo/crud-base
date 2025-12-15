@@ -46,10 +46,39 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         .select('*')
         .eq('user_id', userId)
         .single();
-      if (error) throw error;
+
+      if (error) {
+        // Se o erro for "Row not found" (PGRST116) ou 406, apenas ignoramos (usuário sem perfil extra)
+        if (error.code === 'PGRST116' || error.message.includes('JSON object requested, multiple (or no) rows returned')) {
+          console.warn('Perfil de usuário não encontrado na tabela administradores. Usando fallback de sessão.');
+
+          // Fallback: Recuperar dados da sessão atual para criar um usuário temporário
+          const { data: { user: authUser } } = await supabase.auth.getUser();
+
+          if (authUser) {
+            const fallbackUser: Usuario = {
+              id: authUser.id,
+              user_id: authUser.id,
+              nome: authUser.user_metadata?.nome || authUser.email?.split('@')[0] || 'Usuário',
+              email: authUser.email || '',
+              cargo: 'Usuário', // Cargo padrão
+              ativo: true,
+              created_at: authUser.created_at,
+            };
+            setUser(fallbackUser);
+            return;
+          }
+        }
+        throw error;
+      }
+
       setUser(data);
     } catch (err: any) {
-      logError('AuthProvider.loadUserData', err, { userId });
+      // Evitar logar erros esperados de sessão
+      if (err?.code !== 'PGRST116') {
+        console.error('Erro ao carregar dados do usuário:', err.message);
+      }
+      // Se tudo falhar, não setamos usuário, e o app vai redirecionar para login
       setUser(null);
     }
   };

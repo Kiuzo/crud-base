@@ -50,13 +50,26 @@ export function handleSupabaseError(error: any): string {
     }
 
     // Erros de validação
-    if (errorMessage.includes('violates')) {
-        if (errorMessage.includes('unique')) {
-            return 'Este registro já existe no sistema.';
-        }
-        if (errorMessage.includes('foreign key')) {
-            return 'Não é possível realizar esta operação devido a dependências.';
-        }
+    if (errorMessage.includes('unique')) {
+        return 'Este registro já existe no sistema.';
+    }
+    if (errorMessage.includes('foreign key')) {
+        return 'Não é possível realizar esta operação devido a dependências.';
+    }
+
+    // Rate Limit (Muitas tentativas)
+    if (errorMessage.includes('too many requests') || errorMessage.includes('rate limit')) {
+        return 'Muitas tentativas consecutivas. Aguarde alguns instantes e tente novamente.';
+    }
+
+    // Senha Fraca (outras variantes)
+    if (errorMessage.includes('weak password') || errorMessage.includes('password is too short')) {
+        return 'Sua senha é muito fraca. Escolha uma senha mais segura com no mínimo 6 caracteres.';
+    }
+
+    // Erros genéricos de Auth
+    if (errorMessage.includes('auth') && errorMessage.includes('error')) {
+        return 'Ocorreu um erro de autenticação. Tente novamente.';
     }
 
     // Timeout
@@ -128,9 +141,16 @@ export function isAuthError(error: any): boolean {
  * Log estruturado de erros
  */
 export function logError(context: string, error: any, additionalData?: any): void {
+    // Sanitizar o erro para evitar logar informações sensíveis (como chaves/URLs)
+    const safeError = {
+        message: error?.message || 'Unknown error',
+        code: error?.code,
+        details: error?.details,
+        hint: error?.hint,
+    };
+
     console.error(`[${context}]`, {
-        message: error?.message,
-        error,
+        ...safeError,
         timestamp: new Date().toISOString(),
         ...additionalData,
     });

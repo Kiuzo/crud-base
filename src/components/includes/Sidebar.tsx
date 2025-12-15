@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import Link from 'next/link'; // ADICIONE ESTA LINHA
+import Link from 'next/link';
 import { Home, UserPlus, UserX, Search, UserCog, LogOut, ChevronRight, Menu, X } from "lucide-react";
+import { useAuth } from '@/hooks/useAuth';
 
 export function Sidebar() {
     const [isOpen, setIsOpen] = useState(false);
+    const { logout } = useAuth();
 
     const toggleSidebar = () => {
         setIsOpen(!isOpen);
@@ -137,10 +139,16 @@ export function Sidebar() {
 
                 {/* Footer com separação visual */}
                 <div className="p-4 space-y-1 border-t border-white/10 bg-black/10">
-                    <Link
-                        href="/"
-                        onClick={closeSidebar}
-                        className="flex items-center justify-between px-4 py-3 rounded-xl hover:bg-red-500/20 transition-all group"
+                    <button
+                        onClick={async () => {
+                            closeSidebar();
+                            try {
+                                await logout();
+                            } catch (error: any) {
+                                console.error('Erro ao sair:', error?.message);
+                            }
+                        }}
+                        className="w-full flex items-center justify-between px-4 py-3 rounded-xl hover:bg-red-500/20 transition-all group cursor-pointer"
                     >
                         <div className="flex items-center gap-3">
                             <div className="p-2 rounded-lg group-hover:bg-red-500/30 transition-all">
@@ -148,7 +156,7 @@ export function Sidebar() {
                             </div>
                             <span className="text-sm font-medium text-blue-100 group-hover:text-red-300 transition-colors">Sair</span>
                         </div>
-                    </Link>
+                    </button>
                 </div>
 
             </aside>

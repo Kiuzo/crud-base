@@ -49,7 +49,8 @@ export function RegisterComponent() {
         }
 
         try {
-            const { data, error } = await supabase.auth.signUp({
+            // 1. Criar usuário no Auth
+            const { data: authData, error: authError } = await supabase.auth.signUp({
                 email: email,
                 password: password,
                 options: {
@@ -59,7 +60,28 @@ export function RegisterComponent() {
                 }
             })
 
-            if (error) throw error
+            if (authError) throw authError
+
+            // 2. Criar perfil na tabela administradores
+            if (authData.user) {
+                const { error: dbError } = await supabase
+                    .from('administradores')
+                    .insert([{
+                        user_id: authData.user.id,
+                        nome: nome,
+                        email: email,
+                        cargo: 'Usuário', // Cargo padrão para auto-cadastro
+                        departamento: null,
+                        ativo: true
+                    }])
+
+                if (dbError) {
+                    // Se falhar no banco, idealmente deveríamos desfazer o Auth,
+                    // mas por enquanto vamos apenas lançar o erro
+                    console.error('Erro ao criar perfil:', dbError)
+                    throw new Error('Conta criada, mas houve um erro ao criar seu perfil. Contate o suporte.')
+                }
+            }
 
             setSuccess(true)
 
