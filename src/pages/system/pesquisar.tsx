@@ -1,18 +1,13 @@
-import Head from 'next/head';
-import { Sidebar } from "@/components/includes/Sidebar";
+import { Layout } from "@/components/includes/Layout";
 import { PesquisarUsuario } from "@/components/system/Pesquisar_Component";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 
 export default function Pesquisar() {
     return (
         <ProtectedRoute>
-            <section>
-                <Head>
-                    <title>Pesquisar Usuário - Crud Base</title>
-                </Head>
-                <Sidebar />
+            <Layout title="Pesquisar Usuário">
                 <PesquisarUsuario />
-            </section >
+            </Layout>
         </ProtectedRoute>
     );
 }

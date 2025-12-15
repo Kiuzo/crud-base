@@ -1,18 +1,13 @@
-import Head from 'next/head';
-import { Sidebar } from "@/components/includes/Sidebar";
+import { Layout } from "@/components/includes/Layout";
 import { RemoverUsuario } from "@/components/system/Remover_Component";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 
 export default function Remover() {
     return (
         <ProtectedRoute>
-            <section>
-                <Head>
-                    <title>Remover Usuário - Crud Base</title>
-                </Head>
-                <Sidebar />
+            <Layout title="Remover Usuário">
                 <RemoverUsuario />
-            </section>
+            </Layout>
         </ProtectedRoute>
     );
 }

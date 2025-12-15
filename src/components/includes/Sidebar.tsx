@@ -160,9 +160,6 @@ export function Sidebar() {
                 </div>
 
             </aside>
-
-            {/* Spacer para conteúdo principal em telas grandes */}
-            <div className="hidden lg:block w-64" />
         </>
     );
 }
