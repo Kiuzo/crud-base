@@ -4,6 +4,7 @@ import Link from "next/link"
 import { useRouter } from 'next/navigation'
 import Navbar from "../includes/Navbar"
 import { supabase } from '@/lib/supabase'
+import { handleSupabaseError } from '@/utils/supabase-helpers'
 
 export function RegisterComponent() {
     const [nome, setNome] = useState('')
@@ -21,15 +22,28 @@ export function RegisterComponent() {
         setError('')
         setSuccess(false)
 
-        // Validação de senhas
-        if (password !== confirmPassword) {
-            setError('As senhas não coincidem')
+        // Validação Frontend detalhada
+        if (!nome.trim() || nome.trim().length < 3) {
+            setError('Por favor, informe um nome válido (mínimo 3 caracteres).')
+            setLoading(false)
+            return
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        if (!emailRegex.test(email)) {
+            setError('Por favor, informe um email válido.')
             setLoading(false)
             return
         }
 
         if (password.length < 6) {
-            setError('A senha deve ter no mínimo 6 caracteres')
+            setError('A senha deve ter no mínimo 6 caracteres.')
+            setLoading(false)
+            return
+        }
+
+        if (password !== confirmPassword) {
+            setError('As senhas não coincidem. Verifique e tente novamente.')
             setLoading(false)
             return
         }
@@ -48,14 +62,14 @@ export function RegisterComponent() {
             if (error) throw error
 
             setSuccess(true)
-            
+
             // Redirecionar após 2 segundos
             setTimeout(() => {
                 router.push('/auth/login')
             }, 2000)
-            
+
         } catch (error: any) {
-            setError(error.message || 'Erro ao criar conta')
+            setError(handleSupabaseError(error))
         } finally {
             setLoading(false)
         }
@@ -135,15 +149,6 @@ export function RegisterComponent() {
                         >
                             {loading ? 'Criando conta...' : 'Criar minha conta'}
                         </button>
-
-                        <div className="flex gap-2 items-center justify-center pt-4 border-t border-white/20">
-                            <Link
-                                href="#"
-                                className="text-blue-200 text-sm font-bold hover:text-white hover:underline transition-all duration-200"
-                            >
-                                Como criar boas senhas?
-                            </Link>
-                        </div>
 
                     </div>
 

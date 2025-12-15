@@ -24,16 +24,17 @@ export function Sidebar() {
             </button>
 
             {/* Overlay para mobile */}
+            {/* Overlay para mobile */}
             {isOpen && (
                 <div
                     onClick={closeSidebar}
-                    className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+                    className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[55] lg:hidden transition-all duration-300"
                 />
             )}
 
             {/* Sidebar */}
             <aside className={`
-                fixed left-0 top-0 flex flex-col bg-gradient-to-b from-blue-500 via-blue-600 to-blue-700 text-white w-64 h-full shadow-2xl z-40 transition-transform duration-300 ease-in-out
+                fixed left-0 top-0 flex flex-col bg-gradient-to-b from-blue-500 via-blue-600 to-blue-700 text-white w-64 h-full shadow-2xl z-[60] transition-transform duration-300 ease-in-out
                 ${isOpen ? 'translate-x-0' : '-translate-x-full'}
                 lg:translate-x-0
             `}>

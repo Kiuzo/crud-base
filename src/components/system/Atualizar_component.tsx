@@ -106,18 +106,17 @@ export function AtualizarUsuario() {
                 // Nota: Atualizar senha de outro usuário requer privilégios especiais
                 // Normalmente isso seria feito via API do servidor com service role
                 // Por enquanto, vamos apenas atualizar os dados da tabela
-                console.log('Atualização de senha requer implementação no servidor');
             }
 
             // Atualizar lista local
-            setUsers(users.map(user => 
-                user.id === userToEdit.id 
+            setUsers(users.map(user =>
+                user.id === userToEdit.id
                     ? { ...user, ...updateData }
                     : user
             ));
 
             setMensagem('Usuário atualizado com sucesso! ✅');
-            
+
             // Fechar modal após 1.5s
             setTimeout(() => {
                 cancelUpdate();
@@ -169,7 +168,7 @@ export function AtualizarUsuario() {
 
                 {/* Card da Tabela */}
                 <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
-                    
+
                     {/* Info Banner */}
                     <div className="bg-blue-50 border-b-2 border-blue-100 p-4 flex items-center gap-3">
                         <AlertCircle className="w-5 h-5 text-blue-600" />
@@ -265,7 +264,7 @@ export function AtualizarUsuario() {
                                 <span className="text-red-700 text-sm font-medium">{erro}</span>
                             </div>
                         )}
-                        
+
                         <div className="space-y-5 mb-6">
                             {/* Campo Nome */}
                             <div className="space-y-2">

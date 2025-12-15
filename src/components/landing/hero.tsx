@@ -6,15 +6,15 @@ export function Hero() {
     return (
         <section className="bg-blue-500 text-white relative overflow-hidden">
 
-            <div>
+            <div className="absolute inset-0 lg:hidden pointer-events-none">
                 <Image
                     src={logoImg}
                     alt='Imagem Logo'
                     fill
                     sizes="100vw"
                     priority
-                    className='object-cover opacity-60 lg:hidden' />
-                <div className='absolute inset-0 bg-black opacity-40 md:hidden'></div>
+                    className='object-cover opacity-60' />
+                <div className='absolute inset-0 bg-black opacity-40'></div>
             </div>
 
             <div className="container mx-auto pt-16 pb-16 md:pb-0 px-4 relative">

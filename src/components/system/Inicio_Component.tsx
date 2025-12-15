@@ -1,52 +1,63 @@
-import { useState } from 'react'; // Removido useEffect (não estava sendo usado)
-import Link from 'next/link'; // ADICIONAR ESTA LINHA
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { Badge, Search, UserCheck, UserMinus, UserPlus, TrendingUp } from "lucide-react";
-
-interface Usuario {
-    id: number;
-    nome: string;
-    email: string;
-    dataCadastro: string;
-    pesquisas?: number;
-}
+import { useUsers } from '@/hooks/useUsers';
+import { useAuth } from '@/hooks/useAuth';
 
 export function InicioComponent() {
-    // Removido setUsuarios da desestruturação (não estava sendo usado)
-    const [usuarios] = useState<Usuario[]>([
-        { id: 1, nome: 'Ana Silva', email: 'ana@email.com', dataCadastro: '2024-10-18', pesquisas: 12 },
-        { id: 2, nome: 'Paulo Santos', email: 'paulo@email.com', dataCadastro: '2024-10-18', pesquisas: 8 },
-        { id: 3, nome: 'Maria Oliveira', email: 'maria@email.com', dataCadastro: '2024-10-15', pesquisas: 6 },
-        { id: 4, nome: 'João Costa', email: 'joao@email.com', dataCadastro: '2024-10-10', pesquisas: 4 },
-        { id: 5, nome: 'Carlos Pereira', email: 'carlos@email.com', dataCadastro: '2024-09-28', pesquisas: 2 },
-    ]);
+    const { users, fetchUsers, loading } = useUsers();
+    const { user: currentUser } = useAuth();
+    const [nomeUsuario, setNomeUsuario] = useState('Admin');
 
-    // Nome do usuário logado (pode vir de um contexto ou props)
-    const [nomeUsuario] = useState('Admin');
+    useEffect(() => {
+        fetchUsers();
+    }, [fetchUsers]);
+
+    useEffect(() => {
+        if (currentUser?.nome) {
+            setNomeUsuario(currentUser.nome);
+        }
+    }, [currentUser]);
 
     // Calcular estatísticas
     const getRegistrosHoje = () => {
         const hoje = new Date().toISOString().split('T')[0];
-        return usuarios.filter(u => u.dataCadastro === hoje).length;
+        return users.filter(u => {
+            // O hook useUsers retorna users typed como Usuario, que tem created_at opcional
+            const dataCadastro = u.created_at || new Date().toISOString();
+            return dataCadastro.split('T')[0] === hoje;
+        }).length;
     };
 
     const getRegistrosMes = () => {
         const mesAtual = new Date().getMonth();
         const anoAtual = new Date().getFullYear();
-        return usuarios.filter(u => {
-            const data = new Date(u.dataCadastro);
+        return users.filter(u => {
+            const dataCadastro = u.created_at || new Date().toISOString();
+            const data = new Date(dataCadastro);
             return data.getMonth() === mesAtual && data.getFullYear() === anoAtual;
         }).length;
     };
 
     const getUltimosClientes = () => {
-        return [...usuarios]
-            .sort((a, b) => new Date(b.dataCadastro).getTime() - new Date(a.dataCadastro).getTime())
+        // Ordenar por created_at desc (fallback para ID se created_at nulo)
+        return [...users]
+            .sort((a, b) => {
+                const dateA = new Date(a.created_at || 0).getTime();
+                const dateB = new Date(b.created_at || 0).getTime();
+                return dateB - dateA;
+            })
             .slice(0, 4);
     };
 
     const getMaisPesquisados = () => {
-        return [...usuarios]
-            .sort((a, b) => (b.pesquisas || 0) - (a.pesquisas || 0))
+        // Mock de pesquisas baseado no ID para consistência visual
+        return [...users]
+            .map(u => ({
+                ...u,
+                pesquisas: (u.id.charCodeAt(0) % 50) + 1 // Mock visual
+            }))
+            .sort((a, b) => b.pesquisas - a.pesquisas)
             .slice(0, 4);
     };
 
@@ -55,7 +66,7 @@ export function InicioComponent() {
     const ultimosClientes = getUltimosClientes();
     const maisPesquisados = getMaisPesquisados();
 
-    // Calcular variação percentual (exemplo simplificado)
+    // Calcular variação percentual
     const variacaoOntem = registrosHoje > 0 ? '+100' : '0';
 
     return (
@@ -85,7 +96,7 @@ export function InicioComponent() {
                             </h2>
                             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
 
-                                <Link 
+                                <Link
                                     href="/system/adicionar"
                                     className="bg-white border-2 border-slate-200 rounded-xl p-6 flex flex-col items-center justify-center gap-3 hover:border-blue-500 hover:shadow-lg transition-all group cursor-pointer"
                                 >
@@ -95,7 +106,7 @@ export function InicioComponent() {
                                     <span className="text-sm font-medium text-slate-700 text-center">Adicionar Usuário</span>
                                 </Link>
 
-                                <Link 
+                                <Link
                                     href="/system/remover"
                                     className="bg-white border-2 border-slate-200 rounded-xl p-6 flex flex-col items-center justify-center gap-3 hover:border-red-500 hover:shadow-lg transition-all group cursor-pointer"
                                 >
@@ -105,7 +116,7 @@ export function InicioComponent() {
                                     <span className="text-sm font-medium text-slate-700 text-center">Remover Usuário</span>
                                 </Link>
 
-                                <Link 
+                                <Link
                                     href="/system/pesquisar"
                                     className="bg-white border-2 border-slate-200 rounded-xl p-6 flex flex-col items-center justify-center gap-3 hover:border-green-500 hover:shadow-lg transition-all group cursor-pointer"
                                 >
@@ -115,7 +126,7 @@ export function InicioComponent() {
                                     <span className="text-sm font-medium text-slate-700 text-center">Pesquisar Usuário</span>
                                 </Link>
 
-                                <Link 
+                                <Link
                                     href="/system/atualizar"
                                     className="bg-white border-2 border-slate-200 rounded-xl p-6 flex flex-col items-center justify-center gap-3 hover:border-amber-500 hover:shadow-lg transition-all group cursor-pointer"
                                 >
@@ -167,7 +178,7 @@ export function InicioComponent() {
                                             <Badge className="w-5 h-5 text-emerald-600" />
                                         </div>
                                     </div>
-                                    <p className="text-4xl font-bold text-slate-900">{usuarios.length}</p>
+                                    <p className="text-4xl font-bold text-slate-900">{users.length}</p>
                                     <p className="text-sm text-slate-500 mt-2">Cadastrados</p>
                                 </div>
 
@@ -181,8 +192,8 @@ export function InicioComponent() {
                                     <h3 className="text-lg font-semibold mb-1">💙 Apoie o Projeto</h3>
                                     <p className="text-sm text-blue-100">Ajude a manter o sistema funcionando</p>
                                 </div>
-                                <Link 
-                                    href="#" 
+                                <Link
+                                    href="#"
                                     className="bg-white text-blue-600 px-6 py-2.5 rounded-lg font-medium text-sm hover:bg-blue-50 transition-colors whitespace-nowrap shadow-lg hover:shadow-xl"
                                 >
                                     Fazer Doação
@@ -216,7 +227,7 @@ export function InicioComponent() {
                                                 <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
                                                 <div className="flex-1">
                                                     <span className="text-sm font-medium text-slate-700">{cliente.nome}</span>
-                                                    <p className="text-xs text-slate-500">{new Date(cliente.dataCadastro).toLocaleDateString('pt-BR')}</p>
+                                                    <p className="text-xs text-slate-500">{new Date(cliente.created_at || new Date()).toLocaleDateString('pt-BR')}</p>
                                                 </div>
                                             </li>
                                         ))}

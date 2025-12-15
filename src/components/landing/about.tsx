@@ -17,6 +17,7 @@ export function About() {
                                 fill
                                 quality={100}
                                 className="object-cover hover:scale-110 duration-300"
+                                sizes="(max-width: 1024px) 100vw, 50vw"
                                 priority />
                         </div>
                     </div>
